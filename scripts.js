@@ -22,11 +22,11 @@ function checkIfEmpty(username, password) {
 
 // Update users to LocalStorage
 function updateUsers() {
-    const username = document.querySelector('#username').value;
-    const password = document.querySelector('#password').value;
+    const sign_username = document.querySelector('#sign-username').value;
+    const sign_password = document.querySelector('#sign-password').value;
     // console.log(username,password);
-    if (checkIfEmpty(username,password) === true) {
-        user[`${username}`] = password;
+    if (checkIfEmpty(sign_username,sign_password) === true) {
+        user[`${sign_username}`] = sign_password;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
     }
@@ -34,7 +34,34 @@ function updateUsers() {
 
 // If everithing is right move to home page
 function moveHome() {
-    window.location = 'index.html';
+    window.location = 'home.html';
+}
+
+function getLoginUser(users, currentUser, currentPassword) {
+    let userPassword = null;
+    for (let i = 0; i < users.length; i++) {
+        if ((users[i])[currentUser]) {
+            userPassword = (users[i])[currentUser];
+            if (userPassword === currentPassword) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
+// Login user asap
+function loginUser() {
+    const login_username = document.querySelector('#login-username').value;
+    const login_password = document.querySelector('#login-password').value;
+    getSavedUser();
+    if (getLoginUser(users,login_username,login_password) === true) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 const sign_btn = document.querySelector('#sign-btn');
@@ -42,4 +69,13 @@ sign_btn.addEventListener('click', () => {
     getSavedUser();
     updateUsers();
     // moveHome();
+})
+
+const login_btn = document.querySelector('#login-btn');
+login_btn.addEventListener('click', () => {
+    if (loginUser() === true) {
+        moveHome();
+    } else {
+        alert('Wrong username or password');
+    }
 })
