@@ -39,12 +39,13 @@ function updateUsers() {
     }
 }
 
-// If everithing is right move to home page
+// If everithing is right move to home page with username
 function moveHome() {
     const login_username = document.querySelector('#login-username').value;
     window.location = `home.html?username=${login_username}`;
 }
 
+// Get users
 function getLoginUser(users, currentUser, currentPassword) {
     let userPassword = null;
     for (let i = 0; i < users.length; i++) {
@@ -72,6 +73,7 @@ function loginUser() {
     }
 }
 
+// Sign user asap
 const sign_btn = document.querySelector('#sign-btn');
 sign_btn.addEventListener('click', () => {
     getSavedUser();
@@ -79,6 +81,7 @@ sign_btn.addEventListener('click', () => {
     // moveHome();
 })
 
+// Move to home if ready
 const login_btn = document.querySelector('#login-btn');
 login_btn.addEventListener('click', () => {
     if (loginUser() === true) {
