@@ -13,9 +13,14 @@ function getSavedUser() {
 }
 
 // Check if username and password is not empty
-function checkIfEmpty(username, password) {
+function checkEmptyAndExistingUser(username, password) {    
     if (username === '' || password === '') {
         return false;
+    }
+    for (let i = 0; i < users.length; i++) {
+        if (users[i][username]) {
+            return false;
+        }
     }
     return true;
 }
@@ -25,16 +30,19 @@ function updateUsers() {
     const sign_username = document.querySelector('#sign-username').value;
     const sign_password = document.querySelector('#sign-password').value;
     // console.log(username,password);
-    if (checkIfEmpty(sign_username,sign_password) === true) {
+    if (checkEmptyAndExistingUser(sign_username,sign_password) === true) {
         user[`${sign_username}`] = sign_password;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
+    } else {
+        alert('username already exist or is empty !!!')
     }
 }
 
 // If everithing is right move to home page
 function moveHome() {
-    window.location = 'home.html';
+    const login_username = document.querySelector('#login-username').value;
+    window.location = `home.html?username=${login_username}`;
 }
 
 function getLoginUser(users, currentUser, currentPassword) {
@@ -76,6 +84,6 @@ login_btn.addEventListener('click', () => {
     if (loginUser() === true) {
         moveHome();
     } else {
-        alert('Wrong username or password');
+        alert('wrong username or password');
     }
 })
