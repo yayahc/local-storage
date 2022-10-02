@@ -14,14 +14,19 @@ function getSavedUser() {
 
 // Check if username and password is not empty
 function checkEmptyAndExistingUser(username, password) {    
-    if (username === '' || password === '') {
-        return false;
-    }
     for (let i = 0; i < users.length; i++) {
         if (users[i][username]) {
+            alert('username already exist');
             return false;
         }
     }
+    if (username === '' || password === '') {
+        alert('pls enter your username and password');
+        return false;
+    } else if (password.length < 8) {
+        alert('password too short');
+        return false;
+    }    
     return true;
 }
 
@@ -34,8 +39,6 @@ function updateUsers() {
         user[`${sign_username}`] = sign_password;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
-    } else {
-        alert('username already exist or is empty !!!')
     }
 }
 
@@ -65,7 +68,7 @@ function getLoginUser(users, currentUser, currentPassword) {
 function loginUser() {
     const login_username = document.querySelector('#login-username').value;
     const login_password = document.querySelector('#login-password').value;
-    getSavedUser();
+    getSavedUser();    
     if (getLoginUser(users,login_username,login_password) === true) {
         return true;
     } else {
