@@ -4,8 +4,7 @@ let users = [];
 // Get users from LocalStorage
 function getSavedUser() {
     if (localStorage.getItem('users')) {
-        users = JSON.parse(localStorage.users);
-        console.log(users);        
+        users = JSON.parse(localStorage.users);       
     } else {
         users = [];
         console.log('users data not found');
@@ -13,7 +12,7 @@ function getSavedUser() {
 }
 
 // Check if username and password is not empty
-function checkEmptyAndExistingUser(username, password) {    
+function checkEmptyAndExistingUser(username, password,confirm_sign_password) {    
     for (let i = 0; i < users.length; i++) {
         if (users[i][username]) {
             alert('username already exist');
@@ -26,7 +25,10 @@ function checkEmptyAndExistingUser(username, password) {
     } else if (password.length < 8) {
         alert('password too short');
         return false;
-    }    
+    } else if (password != confirm_sign_password) {
+        alert('password are different');
+        return false;
+    }
     return true;
 }
 
@@ -34,8 +36,9 @@ function checkEmptyAndExistingUser(username, password) {
 function updateUsers() {
     const sign_username = document.querySelector('#sign-username').value;
     const sign_password = document.querySelector('#sign-password').value;
+    const confirm_sign_password = document.querySelector('#confirm-sign-password').value;
     // console.log(username,password);
-    if (checkEmptyAndExistingUser(sign_username,sign_password) === true) {
+    if (checkEmptyAndExistingUser(sign_username,sign_password,confirm_sign_password) === true) {
         user[`${sign_username}`] = sign_password;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
@@ -92,4 +95,38 @@ login_btn.addEventListener('click', () => {
     } else {
         alert('wrong username or password');
     }
+})
+
+
+// Show forgot password screen
+function showForgotPasswordScreen() {
+    const forgot_password_screen = document.querySelector('#forgot-password-screen');
+    forgot_password_screen.style.display = 'block';
+}
+
+// Find user password
+function findUserPassword() {
+    const forgot_username = document.querySelector('#forgot-username').value;
+    let user_password = '';
+    for (let i = 0; i < users.length; i++) {        
+        if (Object.keys(users[i]) == forgot_username) {
+            user_password = users[i][forgot_username];
+            // alert('your password is : '+user_password);
+            alert('your password will be send to your email asap')
+            return true;
+        }
+    }
+    alert('wrong username pls retry');
+    return false;
+}
+
+// If forgot password
+const forgot_password = document.querySelector('#forgot-password');
+const find_password = document.querySelector('#find-password');
+forgot_password.addEventListener('click', () => {
+    showForgotPasswordScreen();
+})
+find_password.addEventListener('click', () => {
+    getSavedUser();
+    findUserPassword();
 })
