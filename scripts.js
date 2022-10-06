@@ -1,6 +1,9 @@
 let user = {};
 let users = [];
 
+let username_crypt = '';
+let password_crypt = '';
+
 // Get users from LocalStorage
 function getSavedUser() {
     if (localStorage.getItem('users')) {
@@ -37,9 +40,9 @@ function updateUsers() {
     const sign_username = document.querySelector('#sign-username').value;
     const sign_password = document.querySelector('#sign-password').value;
     const confirm_sign_password = document.querySelector('#confirm-sign-password').value;
-    // console.log(username,password);
+    cryptData(sign_password);
     if (checkEmptyAndExistingUser(sign_username,sign_password,confirm_sign_password) === true) {
-        user[`${sign_username}`] = sign_password;
+        user[`${sign_username}`] = password_crypt;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
     }
@@ -56,8 +59,10 @@ function getLoginUser(users, currentUser, currentPassword) {
     let userPassword = null;
     for (let i = 0; i < users.length; i++) {
         if ((users[i])[currentUser]) {
-            userPassword = (users[i])[currentUser];
-            if (userPassword === currentPassword) {
+            userPassword = (users[i])[currentUser].join('');
+            console.log(userPassword);
+            cryptData(userPassword);
+            if (password_crypt === currentPassword) {
                 return true;
             } else {
                 return false;
@@ -112,7 +117,7 @@ function findUserPassword() {
         if (Object.keys(users[i]) == forgot_username) {
             user_password = users[i][forgot_username];
             // alert('your password is : '+user_password);
-            alert('your password will be send to your email asap')
+            alert('write to this email: hamedcuenca5@gmail.com \nto receive your password asap');
             return true;
         }
     }
@@ -130,3 +135,20 @@ find_password.addEventListener('click', () => {
     getSavedUser();
     findUserPassword();
 })
+
+// Crypt data befor bind
+function cryptData(sign_password) {
+    const alpha = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    const camel_alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    password_crypt = [];
+    for (let i = 0; i < sign_password.length; i++) {
+        for (let j = 0; j < sign_password.length-1; j++) {
+            if (sign_password[i] == alpha[j] && sign_password[i] != 'z' && sign_password[i] != 'Z') {
+                password_crypt.push(alpha[j+1]+camel_alpha[j+1]);
+            } else if (sign_password[i] == alpha[j] && sign_password[i] == 'z' && sign_password[i] == 'Z') {
+                password_crypt.push('A'+'a');
+            }
+        }        
+    }
+    console.log(password_crypt.join(''));
+}
