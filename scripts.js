@@ -146,10 +146,10 @@ function cryptData(sign_password) {
     password_crypt = [];
     for (let i = 0; i < sign_password.length; i++) {
         for (let j = 0; j < sign_password.length-1; j++) {
-            if ((sign_password[i] == alpha[j] || sign_password[i] == camel_alpha[j] || sign_password[i] == number_alpha[j]) && sign_password[i] != 'z' && sign_password[i] != 'Z' && sign_password[i] != '9') {
-                password_crypt.push(alpha[j+1]+camel_alpha[j+1]+(number_alpha[j+1]+'%'+'@!$#$@#'));
-            } else if ((sign_password[i] == alpha[j] || sign_password[i] == camel_alpha[j] || sign_password[i] == number_alpha[j]) && sign_password[i] == 'z' && sign_password[i] == 'Z' && sign_password[i] == '9') {
+            if (sign_password[i] == 'z' || sign_password[i] == 'Z' || sign_password[i] == '9') {
                 password_crypt.push('A'+'a'+'007');
+            } else {
+                password_crypt.push(alpha[j+1]+camel_alpha[j+1]+(number_alpha[j+1]+'%'+'@!$#$@#'));
             }
         }        
     }
