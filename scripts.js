@@ -57,12 +57,14 @@ function moveHome() {
 // Get users
 function getLoginUser(users, currentUser, currentPassword) {
     let userPassword = null;
+    console.log('current : '+currentPassword)
     for (let i = 0; i < users.length; i++) {
         if ((users[i])[currentUser]) {
-            userPassword = (users[i])[currentUser].join('');
-            console.log(userPassword);
-            cryptData(userPassword);
-            if (password_crypt === currentPassword) {
+            userPassword = (users[i])[currentUser];
+            console.log('user : '+userPassword)
+            cryptData(currentPassword);
+            console.log('cryp : '+password_crypt)
+            if (password_crypt === userPassword) {
                 return true;
             } else {
                 return false;
@@ -96,7 +98,7 @@ sign_btn.addEventListener('click', () => {
 const login_btn = document.querySelector('#login-btn');
 login_btn.addEventListener('click', () => {
     if (loginUser() === true) {
-        moveHome();
+        // moveHome();
     } else {
         alert('wrong username or password');
     }
@@ -140,15 +142,16 @@ find_password.addEventListener('click', () => {
 function cryptData(sign_password) {
     const alpha = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     const camel_alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    const number_alpha = ['0','1','2','3','4','5','6','7','8','9'];
     password_crypt = [];
     for (let i = 0; i < sign_password.length; i++) {
         for (let j = 0; j < sign_password.length-1; j++) {
-            if (sign_password[i] == alpha[j] && sign_password[i] != 'z' && sign_password[i] != 'Z') {
-                password_crypt.push(alpha[j+1]+camel_alpha[j+1]);
-            } else if (sign_password[i] == alpha[j] && sign_password[i] == 'z' && sign_password[i] == 'Z') {
-                password_crypt.push('A'+'a');
+            if ((sign_password[i] == alpha[j] || sign_password[i] == camel_alpha[j] || sign_password[i] == number_alpha[j]) && sign_password[i] != 'z' && sign_password[i] != 'Z' && sign_password[i] != '9') {
+                password_crypt.push(alpha[j+1]+camel_alpha[j+1]+(number_alpha[j+1]+'%'+'@!$#$@#'));
+            } else if ((sign_password[i] == alpha[j] || sign_password[i] == camel_alpha[j] || sign_password[i] == number_alpha[j]) && sign_password[i] == 'z' && sign_password[i] == 'Z' && sign_password[i] == '9') {
+                password_crypt.push('A'+'a'+'007');
             }
         }        
     }
-    console.log(password_crypt.join(''));
+    password_crypt = password_crypt.join('');
 }
