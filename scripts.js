@@ -115,7 +115,6 @@ function showForgotPasswordScreen() {
 
 // Find user password
 function findUserPassword() {
-    alert('Send your username to this email: hamedcuenca5@gmail.com \nto receive your password asap');
     const forgot_username = document.querySelector('#forgot-username').value;
     let user_password = '';
     for (let i = 0; i < users.length; i++) {        
