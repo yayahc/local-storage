@@ -45,6 +45,8 @@ function updateUsers() {
         user[`${sign_username}`] = password_crypt;
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
+        alert("Sign in sucess you can Login");
+        window.location.reload();
     }
 }
 
@@ -98,7 +100,7 @@ sign_btn.addEventListener('click', () => {
 const login_btn = document.querySelector('#login-btn');
 login_btn.addEventListener('click', () => {
     if (loginUser() === true) {
-        // moveHome();
+        moveHome();
     } else {
         alert('wrong username or password');
     }
@@ -113,13 +115,13 @@ function showForgotPasswordScreen() {
 
 // Find user password
 function findUserPassword() {
+    alert('Send your username to this email: hamedcuenca5@gmail.com \nto receive your password asap');
     const forgot_username = document.querySelector('#forgot-username').value;
     let user_password = '';
     for (let i = 0; i < users.length; i++) {        
         if (Object.keys(users[i]) == forgot_username) {
             user_password = users[i][forgot_username];
             // alert('your password is : '+user_password);
-            alert('write to this email: hamedcuenca5@gmail.com \nto receive your password asap');
             return true;
         }
     }
